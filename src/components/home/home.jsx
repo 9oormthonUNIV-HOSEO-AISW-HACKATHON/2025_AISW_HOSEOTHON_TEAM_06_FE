@@ -5,10 +5,66 @@ import axios from "axios";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { media } from "../../styles/media";
+import React, { useEffect, useState } from "react";
+import api from "../../api/axios";   // 포인트 가져오는 API 사용
 
 const Home = () => {
     const { isLoggedIn } = useAuth();
     const nav = useNavigate();
+
+    // ⭐ 유저 포인트 상태
+    const [points, setPoints] = useState(0);
+
+// ⭐ 티어 정보 상태
+    const [tier, setTier] = useState({
+        current: { name: "브론즈", min: 0, max: 100 },
+        next: { name: "실버", min: 100, max: 300 },
+        progress: 0,
+        remain: 100,
+    });
+
+// ⭐ 티어 기준표
+    const tierList = [
+        { name: "브론즈", min: 0, max: 100 },
+        { name: "실버", min: 100, max: 300 },
+        { name: "골드", min: 300, max: 600 },
+        { name: "플래티넘", min: 600, max: 1000 },
+        { name: "다이아", min: 1000, max: Infinity }
+    ];
+
+// ⭐ 포인트 불러오기 + 티어 계산
+    useEffect(() => {
+        const fetchPoint = async () => {
+            try {
+                const res = await api.get("/api/auth/myPoint");
+                const pt = res.data;
+                setPoints(pt);
+
+                // 현재 티어 찾기
+                const cur = tierList.find(t => pt >= t.min && pt < t.max);
+                const nextIdx = tierList.indexOf(cur) + 1;
+                const next = tierList[nextIdx] || null;
+
+                // 진행도 계산
+                const progress = next
+                    ? ((pt - cur.min) / (next.min - cur.min)) * 100
+                    : 100;
+
+                setTier({
+                    current: cur,
+                    next: next,
+                    progress: Math.min(progress, 100),
+                    remain: next ? next.min - pt : 0
+                });
+
+            } catch (err) {
+                console.log("포인트 불러오기 실패", err);
+            }
+        };
+
+        fetchPoint();
+    }, []);
+
 
     const topWords = [
         { word: "가오", meaning: "멋/폼/분위기" },
@@ -40,10 +96,26 @@ const Home = () => {
                             <Keyword>#공감대형성</Keyword>
                         </KeywordRow>
 
-                        <HeroActions>
-                            <Btn onClick={() => nav("/dictionary")}>단어 검색하기</Btn>
-                            <Btn className="outline" onClick={() => nav("/quiz")}>오늘의 퀴즈 풀기</Btn>
-                        </HeroActions>
+                        <TierBox>
+                            <TierTop>
+                                <TierName>🏆 {tier.current.name}</TierName>
+                                <TierPoint>{points} P</TierPoint>
+                            </TierTop>
+
+                            <ProgressTrack>
+                                <ProgressFill style={{ width: `${tier.progress}%` }} />
+                            </ProgressTrack>
+
+                            {tier.next ? (
+                                <TierNext>
+                                    다음 티어 "<b>{tier.next.name}</b>" 까지 {tier.remain}P 남았어요!
+                                </TierNext>
+                            ) : (
+                                <TierNext>최고 티어에 도달했어요! 🎉</TierNext>
+                            )}
+                        </TierBox>
+
+
                     </HeroText>
 
                     <HeroBadge>
@@ -112,8 +184,81 @@ const Page = styled.div`
     flex-direction: column;
 `;
 
+const TierBox = styled.div`
+    margin-top: 16px;
+    background: #ffffff;
+    border: 1.5px solid #e6e6e6;
+    border-radius: 14px;
+    padding: 14px 14px 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    box-shadow: 0 4px 10px rgba(17, 17, 17, 0.04);
 
+    ${media.mobile} {
+        padding: 12px;
+        gap: 6px;
+    }
+`;
 
+const TierTop = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+`;
+
+const TierName = styled.div`
+    font-weight: 900;
+    font-size: 16px;
+    color: #111;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+`;
+
+const TierPoint = styled.div`
+    font-weight: 900;
+    font-size: 15px;
+    color: #4f46e5;
+    background: #f0f2ff;
+    padding: 4px 8px;
+    border-radius: 999px;
+
+    ${media.mobile} {
+        font-size: 14px;
+    }
+`;
+
+const ProgressTrack = styled.div`
+    width: 100%;
+    height: 10px;
+    background: #ececff;
+    border-radius: 999px;
+    overflow: hidden;
+    position: relative;
+`;
+
+const ProgressFill = styled.div`
+    height: 100%;
+    background: linear-gradient(90deg, #4f46e5, #7c3aed);
+    border-radius: 999px;
+    transition: width 0.35s ease;
+`;
+
+const TierNext = styled.div`
+    font-size: 13px;
+    font-weight: 700;
+    color: #333;
+    line-height: 1.35;
+
+    b {
+        color: #111;
+    }
+
+    ${media.mobile} {
+        font-size: 12px;
+    }
+`;
 
 const Logo = styled.div`
   font-weight: 900;

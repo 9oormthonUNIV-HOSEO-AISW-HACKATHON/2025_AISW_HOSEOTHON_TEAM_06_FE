@@ -57,25 +57,30 @@ const Container = styled.main`
     flex-direction: column;
     justify-content: center;
     flex: 1;
+    box-sizing: border-box;
 
     @media (max-width: 768px) {
-        padding: 40px 20px;
+        padding: 40px 18px;
         justify-content: flex-start;
     }
 
     @media (max-width: 480px) {
-        padding: 24px 16px;
+        padding: 22px 14px;
     }
 `;
 
 const HeaderGroup = styled.div`
     text-align: center;
-    margin-bottom: 50px;
+    margin-bottom: 44px;
+
+    @media (max-width: 768px) {
+        margin-bottom: 32px;
+    }
 
     @media (max-width: 480px) {
-        margin-bottom: 20px;
+        margin-bottom: 18px;
         text-align: left;
-        padding-left: 4px;
+        padding-left: 2px;
     }
 `;
 
@@ -83,7 +88,8 @@ const Title = styled.h2`
     font-size: 32px;
     font-weight: 900;
     color: #1f2937;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
+    letter-spacing: -0.3px;
 
     @media (max-width: 768px) {
         font-size: 26px;
@@ -98,6 +104,12 @@ const Title = styled.h2`
 const SubTitle = styled.p`
     font-size: 16px;
     color: #6b7280;
+    line-height: 1.5;
+    word-break: keep-all;
+
+    @media (max-width: 768px) {
+        font-size: 14px;
+    }
 
     @media (max-width: 480px) {
         font-size: 13px;
@@ -107,9 +119,14 @@ const SubTitle = styled.p`
 
 const QuizList = styled.div`
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 24px;
     width: 100%;
+
+    @media (max-width: 900px) {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
 
     @media (max-width: 600px) {
         display: flex;
@@ -120,9 +137,11 @@ const QuizList = styled.div`
 
 const QuizItem = styled.div`
     background: white;
-    padding: 40px 30px;
-    border-radius: 24px;
+    padding: 38px 28px;
+    border-radius: 22px;
     border: 1px solid #e5e7eb;
+    width: 100%;
+    box-sizing: border-box;
 
     display: flex;
     flex-direction: column;
@@ -130,31 +149,34 @@ const QuizItem = styled.div`
     text-align: center;
 
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.03);
 
     &:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        transform: translateY(-6px);
+        box-shadow: 0 18px 22px -6px rgba(0, 0, 0, 0.12);
         border-color: rgb(79, 70, 229);
     }
 
     &:active {
-        transform: translateY(-2px);
+        transform: translateY(-1px);
     }
 
+    /* ✅ 모바일: 가로 카드로 자연스럽게 꽉 차게 */
     @media (max-width: 600px) {
         flex-direction: row;
-        width: 80%;
         align-items: center;
         text-align: left;
-        padding: 16px;
-        border-radius: 16px;
+
+        padding: 16px 14px;
+        border-radius: 14px;
+        gap: 10px;
 
         &:hover {
             transform: none;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
         }
+
         &:active {
             background-color: #f9fafb;
             transform: scale(0.98);
@@ -171,7 +193,7 @@ const IconWrapper = styled.div`
     align-items: center;
     justify-content: center;
     font-size: 32px;
-    margin-bottom: 24px;
+    margin-bottom: 22px;
     transition: background-color 0.3s;
 
     ${QuizItem}:hover & {
@@ -179,11 +201,11 @@ const IconWrapper = styled.div`
     }
 
     @media (max-width: 600px) {
-        width: 48px;
-        height: 48px;
+        width: 46px;
+        height: 46px;
         font-size: 20px;
         margin-bottom: 0;
-        margin-right: 14px;
+        margin-right: 10px;
         flex-shrink: 0;
     }
 `;
@@ -191,7 +213,7 @@ const IconWrapper = styled.div`
 const ItemContent = styled.div`
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
 
     @media (max-width: 600px) {
         gap: 4px;
@@ -208,7 +230,6 @@ const ItemTitle = styled.h3`
         font-size: 16px;
     }
 `;
-
 const ItemDesc = styled.p`
     font-size: 15px;
     color: #6b7280;
@@ -221,6 +242,7 @@ const ItemDesc = styled.p`
 
     @media (max-width: 600px) {
         font-size: 12px;
+        line-height: 1.4;
 
         .desktop-br {
             display: none;
