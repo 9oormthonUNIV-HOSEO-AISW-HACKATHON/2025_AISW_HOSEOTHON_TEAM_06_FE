@@ -153,8 +153,6 @@ const MyPage = () => {
                 </Card>
             </Container>
 
-            <Footer>footer</Footer>
-
             {modalOpen && (
                 <Overlay onClick={closeModal}>
                     <Modal onClick={(e) => e.stopPropagation()}>
