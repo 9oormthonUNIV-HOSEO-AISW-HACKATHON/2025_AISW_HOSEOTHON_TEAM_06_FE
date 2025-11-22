@@ -1,7 +1,6 @@
 import React, { useMemo, useState } from "react";
 import styled from "styled-components";
 import { useNavigate, useParams } from "react-router-dom";
-import logo from "../../assets/logo.png";
 
 // -------------------- 문제 셋 --------------------
 const WORD_QUESTIONS = [
@@ -28,10 +27,10 @@ const QUESTION_SET = {
 // -------------------- 스타일 공통 --------------------
 
 const Page = styled.div`
-  min-height: 100vh;
-  background: #f2f2f2;
-  display: flex;
-  flex-direction: column;
+    height: 100%;
+    background: #f2f2f2;
+    display: flex;
+    flex-direction: column;
 `;
 
 const Header = styled.header`
@@ -166,15 +165,6 @@ const QuizRunner = () => {
 
     return (
         <Page>
-            <Header>
-                <HeaderLeft>
-                    <LogoImg src={logo} onClick={() => nav("/")} />
-                </HeaderLeft>
-
-                <ScoreBox>점수: {correctCount * 10}점</ScoreBox>
-                <UserBox>User님</UserBox>
-            </Header>
-
             <Container>
                 <Title>{title}</Title>
 

@@ -2,7 +2,6 @@ import { useAuth } from "../../context/AuthContext.jsx";
 import SignIn from "../sign/SignIn.jsx";
 import { Navigate } from 'react-router-dom';
 import axios from "axios";
-import logo from "../../assets/logo.png";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
@@ -24,137 +23,90 @@ const Home = () => {
 
     return(
         <Page>
-        {/* Header */}
-        <Header>
-            <LogoImg src={logo} alt="logo" onClick={() => nav("/")} />
-                <HeaderActions>
-                    <Btn className="outline" onClick={() => nav("/signup")}>회원가입</Btn>
-                    <Btn className="outline" onClick={() => nav("/signin")}>로그인</Btn>
-                    </HeaderActions>
-                    </Header>
+            <Container>
+                {/* Hero */}
+                <Hero>
+                    <HeroText>
+                        <HeroTitle>세대 공감 단어 서비스</HeroTitle>
+                        <HeroDesc>
+                        기성세대와 MZ세대가 서로의 단어를 이해하고 공감할 수 있도록 돕는 서비스입니다.
+                        </HeroDesc>
 
-        <Container>
-            {/* Hero */}
-            <Hero>
-            <HeroText>
-                <HeroTitle>세대 공감 단어 서비스</HeroTitle>
-                <HeroDesc>
-                기성세대와 MZ세대가 서로의 단어를 이해하고 공감할 수 있도록 돕는 서비스입니다.
-                </HeroDesc>
+                        <KeywordRow>
+                            <Keyword>#세대소통</Keyword>
+                            <Keyword>#신조어사전</Keyword>
+                            <Keyword>#퀴즈로학습</Keyword>
+                            <Keyword>#공감대형성</Keyword>
+                        </KeywordRow>
 
-                <KeywordRow>
-                <Keyword>#세대소통</Keyword>
-                <Keyword>#신조어사전</Keyword>
-                <Keyword>#퀴즈로학습</Keyword>
-                <Keyword>#공감대형성</Keyword>
-                </KeywordRow>
+                        <HeroActions>
+                            <Btn onClick={() => nav("/search")}>단어 검색하기</Btn>
+                            <Btn className="outline" onClick={() => nav("/quiz")}>오늘의 퀴즈 풀기</Btn>
+                        </HeroActions>
+                    </HeroText>
 
-                <HeroActions>
-                <Btn onClick={() => nav("/search")}>단어 검색하기</Btn>
-                <Btn className="outline" onClick={() => nav("/quiz")}>오늘의 퀴즈 풀기</Btn>
-                </HeroActions>
-            </HeroText>
+                    <HeroBadge>
+                    <BadgeTitle>🔥 오늘의 인기 단어</BadgeTitle>
 
-            <HeroBadge>
-                <BadgeTitle>🔥 오늘의 인기 단어</BadgeTitle>
+                    {/* 단어+뜻 유지 */}
+                    <BadgeWords>
+                    {topWords.map((item, idx) => (
+                        <WordChip key={idx}>
+                        <WordText>{item.word}</WordText>
+                        <MeaningText>{item.meaning}</MeaningText>
+                        </WordChip>
+                    ))}
+                    </BadgeWords>
 
-                {/* 단어+뜻 유지 */}
-                <BadgeWords>
-                {topWords.map((item, idx) => (
-                    <WordChip key={idx}>
-                    <WordText>{item.word}</WordText>
-                    <MeaningText>{item.meaning}</MeaningText>
-                    </WordChip>
-                ))}
-                </BadgeWords>
+                    <Small onClick={() => nav("/trending")} style={{cursor:"pointer", marginTop: 2}}>
+                    많이 검색된 단어 보러가기 →
+                    </Small>
+                </HeroBadge>
+                </Hero>
 
-                <Small onClick={() => nav("/trending")} style={{cursor:"pointer", marginTop: 2}}>
-                많이 검색된 단어 보러가기 →
-                </Small>
-            </HeroBadge>
-            </Hero>
+                {/* Grid */}
+                <Grid>
+                    {/* Quiz Preview */}
+                    <QuizCard onClick={() => nav("/quiz")}>
+                        <CardTitle>오늘의 퀴즈</CardTitle>
+                        <QuizQ>{todayQuiz.q}</QuizQ>
+                        <Small>퀴즈로 세대 단어를 재미있게 익혀봐요!</Small>
+                        <Btn style={{width:"fit-content"}}>퀴즈 풀기 →</Btn>
+                    </QuizCard>
 
-            {/* Grid */}
-            <Grid>
-            {/* Quiz.jsx Preview */}
-            <QuizCard onClick={() => nav("/quiz")}>
-                <CardTitle>오늘의 퀴즈</CardTitle>
-                <QuizQ>{todayQuiz.q}</QuizQ>
-                <Small>퀴즈로 세대 단어를 재미있게 익혀봐요!</Small>
-                <Btn style={{width:"fit-content"}}>퀴즈 풀기 →</Btn>
-            </QuizCard>
+                    {/* Search Shortcut */}
+                    <SearchCard>
+                        <div>
+                        <CardTitle>단어 검색</CardTitle>
+                        <Small>
+                            궁금한 단어를 입력하면 세대별 의미 차이를 보여줘요.
+                        </Small>
+                        </div>
+                        <Btn onClick={() => nav("/search")}>검색하러 가기</Btn>
+                    </SearchCard>
 
-            {/* Search Shortcut */}
-            <SearchCard>
-                <div>
-                <CardTitle>단어 검색</CardTitle>
-                <Small>
-                    궁금한 단어를 입력하면 세대별 의미 차이를 보여줘요.
-                </Small>
-                </div>
-                <Btn onClick={() => nav("/search")}>검색하러 가기</Btn>
-            </SearchCard>
-
-            {/* Extra */}
-            <ExtraCard>
-                <CardTitle>기능 추가 예정</CardTitle>
-                <Small>(예: 세대 공감 영화 추천 / 대화 코치 / 주간 트렌드)</Small>
-                <Btn className="outline" disabled>Coming Soon</Btn>
-            </ExtraCard>
-            </Grid>
-        </Container>
-
-        <Footer>footer</Footer>
+                    {/* Extra */}
+                    <ExtraCard>
+                        <CardTitle>기능 추가 예정</CardTitle>
+                        <Small>(예: 세대 공감 영화 추천 / 대화 코치 / 주간 트렌드)</Small>
+                        <Btn className="outline" disabled>Coming Soon</Btn>
+                    </ExtraCard>
+                </Grid>
+            </Container>
         </Page>
     )
 }
 
 const Page = styled.div`
-  min-height: 100vh;
-  background: linear-gradient(180deg, #f6f7fb 0%, #f2f2f2 70%);
-  display: flex;
-  flex-direction: column;
-`;
-
-const Header = styled.header`
-  background: white;
-  border-bottom: 1px solid #eee;
-  padding: 14px 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+    height: 100%;
+    background: linear-gradient(180deg, #f6f7fb 0%, #f2f2f2 70%);
+    display: flex;
+    flex-direction: column;
 `;
 
 const Logo = styled.div`
   font-weight: 900;
   font-size: 18px;
-`;
-
-const HeaderActions = styled.div`
-  display: flex;
-  gap: 8px;
-`;
-
-const Btn = styled.button`
-  border: none;
-  background: #4f46e5;
-  color: white;
-  padding: 9px 14px;
-  border-radius: 10px;
-  cursor: pointer;
-  font-weight: 800;
-  transition: 0.15s ease;
-
-  &:hover {
-    transform: translateY(-1px);
-    filter: brightness(0.95);
-  }
-
-  &.outline {
-    background: white;
-    color: #111;
-    border: 1px solid #333;
-  }
 `;
 
 const Container = styled.main`
@@ -338,11 +290,26 @@ const Footer = styled.footer`
   color: #333;
 `;
 
-const LogoImg = styled.img`
-  width: 36px;
-  height: 36px;
-  object-fit: contain;
+const Btn = styled.button`
+  border: none;
+  background: #4f46e5;
+  color: white;
+  padding: 9px 14px;
+  border-radius: 10px;
   cursor: pointer;
-`
+  font-weight: 800;
+  transition: 0.15s ease;
+
+  &:hover {
+    transform: translateY(-1px);
+    filter: brightness(0.95);
+  }
+
+  &.outline {
+    background: white;
+    color: #111;
+    border: 1px solid #333;
+  }
+`;
 
 export default Home;

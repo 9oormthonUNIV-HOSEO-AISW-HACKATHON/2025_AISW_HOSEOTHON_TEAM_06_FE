@@ -1,16 +1,14 @@
 import React from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import logo from "../../assets/logo.png";
 
 
 const Page = styled.div`
-    min-height: 100vh;
+    min-height: 100%;
     background: #f2f2f2;
     display: flex;
     flex-direction: column;
 `;
-
 
 const Header = styled.header`
     background: white;
@@ -49,7 +47,6 @@ const UserBox = styled.div`
     border-radius: 8px;
     font-weight: 700;
 `;
-
 
 const Container = styled.main`
     max-width: 900px;
@@ -106,15 +103,6 @@ const Quiz = () => {
 
     return (
         <Page>
-            {/* HEADER */}
-            <Header>
-                <HeaderLeft>
-                    <LogoImg src={logo} alt="logo" onClick={() => nav("/")} />
-                </HeaderLeft>
-
-                <ScoreBox>점수: 0점</ScoreBox>
-                <UserBox>User님</UserBox>
-            </Header>
 
             {/* CONTENT */}
             <Container>
@@ -126,9 +114,6 @@ const Quiz = () => {
                     <QuizBox onClick={() => nav("/quiz/situation")}>상황별 퀴즈</QuizBox>
                 </QuizGrid>
             </Container>
-
-
-            <Footer>footer</Footer>
         </Page>
     );
 };

@@ -2,11 +2,14 @@ import React, {useState} from 'react';
 import styled from 'styled-components';
 import api from '../../api/axios.jsx';
 import { useNavigate } from "react-router-dom";
+import { useAuth } from '../../context/AuthContext';
 
 const SignIn = () => {
-    const navigate = useNavigate();
-    const [userId, setUserId] = useState()
-    const [password, setPassword] = useState()
+    const { login } = useAuth();
+
+    const navigate = useNavigate("");
+    const [userId, setUserId] = useState("")
+    const [password, setPassword] = useState("")
     const [error, setError] = useState("");
 
     const handleIdChange = (e) => {
@@ -19,18 +22,52 @@ const SignIn = () => {
         setError('')
     }
 
-    const SignInButton = async () => {
-        if (!userId  || !password || userId === '' || password === '') {
+    const handleSignIn = async () => {
+        if (!userId.trim() || !password.trim()) {
             setError("아이디와 비밀번호를 모두 입력해주세요.");
             return;
         }
-    // TODO : 주소 수정, 데이터 수정, response 어떻게 올지 받고 토큰 저장하기
-    // TODO : 실패하는 경우 추가
-    //     try{
-    //         const res = await api.post('/signUpOk', {userId: userId, password: password})
-    //     }
-    //     catch(error){
-    //     }
+
+        try {
+            const loginResponse = await api.post('/api/auth/login', {
+                userId: userId,
+                userPass: password
+            });
+
+            if (loginResponse.status === 200) {
+                const token = loginResponse.data;
+
+                if (token) {
+                    login(token);
+
+                    try {
+                        const myPageResponse = await api.get('/api/auth/myPage');
+
+                        const userData = myPageResponse.data;
+
+                        const displayName = userData.userNickname || userData.userName || userId;
+
+                        localStorage.setItem('nickname', displayName);
+
+                        console.log("환영합니다:", displayName);
+
+                    } catch (infoError) {
+                        console.error("내 정보 가져오기 실패:", infoError);
+                        // 정보 가져오기에 실패해도 로그인은 유지하되, 이름은 아이디로 대체
+                        localStorage.setItem('nickname', userId);
+                    }
+
+                    // 4. 메인으로 이동
+                    navigate('/');
+                } else {
+                    setError("서버로부터 토큰을 받아오지 못했습니다.");
+                }
+            }
+        } catch (err) {
+            console.error(err);
+            const msg = err.response?.data?.message || "로그인에 실패했습니다. 아이디와 비밀번호를 확인해주세요.";
+            setError(msg);
+        }
     }
 
     return (
@@ -38,14 +75,14 @@ const SignIn = () => {
             <Card>
                 <Title>로그인</Title>
 
-                <Input onChange={handleIdChange} value={userId} placeholder="이메일" />
+                <Input onChange={handleIdChange} value={userId} placeholder="아이디" />
                 <Input onChange={handlePasswordChange} value={password} type="password" placeholder="비밀번호" />
 
                 <ErrorText $visible={!!error}>
                     {error || " "}
                 </ErrorText>
 
-                <Button onClick={SignInButton}>로그인</Button>
+                <Button onClick={handleSignIn}>로그인</Button>
 
                 <SubText>
                     아직 회원이 아니신가요?
@@ -60,7 +97,7 @@ const SignIn = () => {
 /* ===== 로그인 페이지 스타일 ===== */
 const Container = styled.div`
     width: 100%;
-    min-height: 100vh;
+    min-height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
