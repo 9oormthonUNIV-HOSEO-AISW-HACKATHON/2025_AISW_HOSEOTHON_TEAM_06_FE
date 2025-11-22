@@ -1,32 +1,23 @@
-import React, { createContext, useState, useEffect, useContext } from 'react';
+import { useState, useCallback } from 'react';
+import constate from 'constate';
 
-const AuthContext = createContext(null);
-
-export const AuthProvider = ({ children }) => {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-    useEffect(() => {
+function useAuthLogic() {
+    const [isLoggedIn, setIsLoggedIn] = useState(() => {
         const token = localStorage.getItem('token');
-        if (token) {
-            setIsLoggedIn(true);
-        }
-    }, []);
+        return !!token;
+    });
 
-    const login = (token) => {
+    const login = useCallback((token) => {
         localStorage.setItem('token', token);
         setIsLoggedIn(true);
-    };
+    }, []);
 
-    const logout = () => {
+    const logout = useCallback(() => {
         localStorage.removeItem('token');
         setIsLoggedIn(false);
-    };
+    }, []);
 
-    return (
-        <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
-            {children}
-        </AuthContext.Provider>
-    );
-};
+    return { isLoggedIn, login, logout };
+}
 
-export const useAuth = () => useContext(AuthContext);
+export const [AuthProvider, useAuth] = constate(useAuthLogic);
