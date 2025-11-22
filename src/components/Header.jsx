@@ -2,15 +2,36 @@ import logo from "../assets/logo.png";
 import styled from "styled-components";
 import {useNavigate} from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { useState, useRef, useEffect } from "react";
 
 const Header = () => {
     const nav = useNavigate();
     const { isLoggedIn, logout } = useAuth();
     const username = localStorage.getItem('nickname') || "사용자";
 
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const dropdownRef = useRef(null);
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setIsDropdownOpen(false);
+            }
+        };
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
+
     const handleLogout = () => {
         logout();
         nav("/");
+    };
+
+    const handleMyPage = () => {
+        setIsDropdownOpen(false);
+        nav("/mypage"); // App.jsx에 /mypage 라우트가 설정되어 있어야 합니다.
     };
 
     return(
