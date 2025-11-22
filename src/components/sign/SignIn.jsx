@@ -45,15 +45,10 @@ const SignIn = () => {
 
                         const userData = myPageResponse.data;
 
-                        const displayName = userData.userNickname || userData.userName || userId;
-
-                        localStorage.setItem('nickname', displayName);
-
-                        console.log("환영합니다:", displayName);
+                        console.log("환영합니다:", userData.userNickname);
 
                     } catch (infoError) {
                         console.error("내 정보 가져오기 실패:", infoError);
-                        // 정보 가져오기에 실패해도 로그인은 유지하되, 이름은 아이디로 대체
                         localStorage.setItem('nickname', userId);
                     }
 

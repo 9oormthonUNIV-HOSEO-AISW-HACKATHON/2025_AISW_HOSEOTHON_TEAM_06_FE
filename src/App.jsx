@@ -31,8 +31,7 @@ function App() {
                             <Route path="/quiz" element={<Quiz />} />
                             <Route path="/quiz/:category" element={<QuizRunner />} />
                             <Route path="/dictionary" element={<Dictionary />} />
-                            <Route path="/myPage" element={<MyPage />} />
-
+                            <Route path="/mypage" element={<MyPage />} />
                         </Routes>
                     </MainContent>
                 </AppContainer>
