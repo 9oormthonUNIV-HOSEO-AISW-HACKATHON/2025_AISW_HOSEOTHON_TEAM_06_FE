@@ -5,7 +5,7 @@ import Home from './components/home/home.jsx'
 import SignIn from './components/sign/signin.jsx'
 import SignUp from './components/sign/signup.jsx'
 import Translate from './components/translate/Translate.jsx'
-import Quiz from './components/quiz/Quiz.jsx'
+// import Quiz from './components/quiz/Quiz.jsx'
 
 function App() {
 
@@ -17,7 +17,7 @@ function App() {
                     <Route path='/signIn' element={<SignIn />} />
                     <Route path='/signUp' element={<SignUp />} />
                     <Route path='/translate' element={<Translate />} />
-                    <Route path='/quiz' element={<Quiz />}/>
+                    {/*<Route path='/quiz' element={<Quiz />}/>*/}
                 </Routes>
             </BrowserRouter>
         </AuthProvider>
