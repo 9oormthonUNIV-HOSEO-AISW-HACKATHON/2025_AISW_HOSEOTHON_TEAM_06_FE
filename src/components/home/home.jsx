@@ -40,7 +40,7 @@ const Home = () => {
                         </KeywordRow>
 
                         <HeroActions>
-                            <Btn onClick={() => nav("/search")}>단어 검색하기</Btn>
+                            <Btn onClick={() => nav("/dictionary")}>단어 검색하기</Btn>
                             <Btn className="outline" onClick={() => nav("/quiz")}>오늘의 퀴즈 풀기</Btn>
                         </HeroActions>
                     </HeroText>
