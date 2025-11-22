@@ -14,7 +14,7 @@ const Quiz = () => {
                 </HeaderGroup>
 
                 <QuizList>
-                    <QuizItem onClick={() => nav("/quiz/S")}>
+                    <QuizItem onClick={() => nav("/quiz/O")}>
                         <IconWrapper>💻</IconWrapper>
                         <ItemContent>
                             <ItemTitle>MZ세대 퀴즈</ItemTitle>
@@ -22,7 +22,7 @@ const Quiz = () => {
                         </ItemContent>
                     </QuizItem>
 
-                    <QuizItem onClick={() => nav("/quiz/C")}>
+                    <QuizItem onClick={() => nav("/quiz/M")}>
                         <IconWrapper>🧩</IconWrapper>
                         <ItemContent>
                             <ItemTitle>기성세대 퀴즈</ItemTitle>

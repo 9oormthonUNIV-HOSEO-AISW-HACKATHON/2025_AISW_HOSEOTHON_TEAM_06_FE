@@ -7,7 +7,10 @@ const QuizRunner = () => {
     const { category } = useParams(); // 'S' or 'C'
     const nav = useNavigate();
 
+    // 전체 문제 목록 저장
+    const [questionList, setQuestionList] = useState([]);
     const [currentQuestion, setCurrentQuestion] = useState(null);
+
     const [selected, setSelected] = useState(null);
     const [finish, setFinish] = useState(false);
     const [loading, setLoading] = useState(true);
@@ -15,6 +18,7 @@ const QuizRunner = () => {
     const [userIsMz, setUserIsMz] = useState("");
     const [isCorrect, setIsCorrect] = useState(false);
 
+    // 1. 사용자 정보(isMz) 가져오기
     useEffect(() => {
         const fetchUserInfo = async () => {
             try {
@@ -27,6 +31,7 @@ const QuizRunner = () => {
         fetchUserInfo();
     }, []);
 
+    // 2. 문제 데이터 로드
     useEffect(() => {
         const fetchQuestions = async () => {
             try {
@@ -34,10 +39,10 @@ const QuizRunner = () => {
                 const allQuestions = response.data;
 
                 const filtered = allQuestions.filter(q => q.type === category);
+                setQuestionList(filtered);
 
                 if (filtered.length > 0) {
-                    const randomIndex = Math.floor(Math.random() * filtered.length);
-                    setCurrentQuestion(filtered[randomIndex]);
+                    pickRandomQuestion(filtered);
                 } else {
                     console.warn("해당 카테고리의 문제가 없습니다.");
                 }
@@ -51,23 +56,36 @@ const QuizRunner = () => {
         fetchQuestions();
     }, [category]);
 
+    // 랜덤 문제 선택 함수
+    const pickRandomQuestion = (list) => {
+        const randomIndex = Math.floor(Math.random() * list.length);
+        setCurrentQuestion(list[randomIndex]);
+    };
+
+    // 다음 문제로 넘어가기
+    const handleNextQuestion = () => {
+        setFinish(false);       // 결과창 닫기
+        setSelected(null);      // 선택 초기화
+        setIsCorrect(false);    // 정답 여부 초기화
+        pickRandomQuestion(questionList); // 새 문제 뽑기
+    };
+
     const handleSelect = (idx) => {
         setSelected(idx);
     };
 
+    // 3. 제출 버튼 핸들러
     const handleSubmit = async () => {
         if (!currentQuestion || selected === null) return;
 
         try {
-            const response = await api.post("/api/que/check", {
+            const { data: resultMessage } = await api.post("/api/que/check", {
                 questionIdx: currentQuestion.idx,
                 answerNumber: selected.toString(),
                 isMz: userIsMz
             });
 
-            const resultMessage = response.data;
-            const correct = resultMessage === "정답입니다!";
-
+            const correct = resultMessage === "정답입니다.";
             setIsCorrect(correct);
 
             if (correct) {
@@ -79,7 +97,6 @@ const QuizRunner = () => {
                 }
             }
 
-            // 결과 화면으로 전환
             setFinish(true);
 
         } catch (error) {
@@ -128,6 +145,7 @@ const QuizRunner = () => {
                         </NavRow>
                     </Card>
                 ) : (
+                    // 결과 화면
                     <Card>
                         {isCorrect ? (
                             <>
@@ -147,14 +165,14 @@ const QuizRunner = () => {
 
                         <Divider />
 
-                        {/* 해설 출력 영역 */}
                         <ExplainBox>
                             <ExplainLabel>📝 해설</ExplainLabel>
                             <ExplainText>{currentQuestion.explain}</ExplainText>
                         </ExplainBox>
 
                         <NavRow>
-                            <Btn onClick={() => nav("/quiz")}>목록으로</Btn>
+                            <Btn onClick={() => nav("/quiz")} className="outline">목록으로</Btn>
+                            <Btn onClick={handleNextQuestion} className="primary">다음 문제</Btn>
                         </NavRow>
                     </Card>
                 )}
@@ -311,11 +329,14 @@ const NavRow = styled.div`
 const Btn = styled.button`
     padding: 10px 16px;
     border-radius: 10px;
-    border: 1px solid #cfcfcf;
-    background: white;
     font-weight: 800;
     cursor: pointer;
     transition: background-color 0.2s;
+
+    /* 기본 스타일 (Secondary 느낌) */
+    border: 1px solid #cfcfcf;
+    background: white;
+    color: #333;
 
     &:hover:not(:disabled) {
         background-color: #f9fafb;
@@ -325,5 +346,24 @@ const Btn = styled.button`
     &:disabled {
         opacity: 0.5;
         cursor: not-allowed;
+    }
+
+    /* Primary 스타일 (강조 버튼) */
+    &.primary {
+        background-color: #5b4bff;
+        color: white;
+        border: 1px solid #5b4bff;
+
+        &:hover {
+            background-color: #4a3bcf;
+            border-color: #4a3bcf;
+        }
+    }
+
+    /* Outline 스타일 (선택적) */
+    &.outline {
+        background: white;
+        color: #555;
+        border: 1px solid #ddd;
     }
 `;
