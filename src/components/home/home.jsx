@@ -18,9 +18,9 @@ const Home = () => {
     const todayQuiz = { q: "“가오”의 뜻은 무엇일까요?" };
 
 
-    if (!isLoggedIn) {
-        return <Navigate to="/signIn" replace />;
-    }
+    // if (!isLoggedIn) {
+    //     return <Navigate to="/signIn" replace />;
+    // }
 
     return(
         <Page>

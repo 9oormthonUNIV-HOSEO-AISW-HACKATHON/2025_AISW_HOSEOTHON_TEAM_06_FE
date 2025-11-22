@@ -8,16 +8,71 @@ const SignUp = () => {
     const [password, setPassword] = useState();
     const [checkPass, setCheckPass] = useState();
     const [generation, setGeneration] = useState(0);
-    
-    const [err, setErr] = useState("");
 
-    const handleIdChange = (e) => { setUserId(e.target.value); }
-    const handlePasswordChange = (e) => { setPassword(e.target.value) }
-    const handleCheckPasswordChange = (e) => { setCheckPass(e.target.value) }
+    const [userIdError, setUserIdError] = useState("");
+    const [passwordError, setPasswordError] = useState("");
+    const [matchError, setMatchError] = useState("");
+    const [submitError, setSubmitError] = useState("");
+
+    const handleIdChange = (e) => {
+        const value = e.target.value;
+        setUserId(value);
+        setSubmitError("");
+
+        if (value.length > 0 && !ID_REGEX.test(value)) {
+            setUserIdError("아이디는 영문 소문자와 숫자 4~12자여야 합니다.");
+        } else {
+            setUserIdError("");
+        }
+    };
+
+    const handlePasswordChange = (e) => {
+        const value = e.target.value;
+        setPassword(value);
+        setSubmitError("");
+
+        if (value.length > 0 && !PW_REGEX.test(value)) {
+            setPasswordError("비밀번호는 영문과 숫자 포함 8~20자여야 합니다.");
+        } else {
+            setPasswordError("");
+        }
+    };
+
+    const handleCheckPasswordChange = (e) => {
+        const value = e.target.value;
+        setCheckPass(value);
+        setSubmitError("");
+
+        if (value.length > 0 && password !== value) {
+            setMatchError("비밀번호가 일치하지 않습니다.");
+        } else {
+            setMatchError("");
+        }
+    };
+
+    const ID_REGEX = /^[a-z0-9]{4,12}$/;
+    const PW_REGEX = /^[a-zA-Z0-9]{8,20}$/;
 
     const SignUpButton = () => {
-    //     TODO: 요청 보내기
-        setErr("미구현")
+        if (!userId || !password || !checkPass) {
+            setSubmitError("모든 정보를 입력해주세요.");
+            return;
+        }
+
+        if (userIdError || passwordError || matchError) {
+            setSubmitError("입력 정보를 다시 확인해주세요.");
+            return;
+        }
+
+        if (generation === 0) {
+            setSubmitError("세대를 선택해주세요.");
+            return;
+        }
+
+        // TODO: 백엔드로 회원가입 요청 보내기 (axios 등)
+        console.log("회원가입 성공!");
+        alert("회원가입이 완료되었습니다.");
+        navigate('/signIn');
     }
 
     return (
@@ -27,13 +82,16 @@ const SignUp = () => {
 
             <Label>아이디</Label>
             <Input value={userId} onChange={handleIdChange} placeholder="아이디를 입력하세요" />
-
+            <ErrorText $visible={!!userIdError}>{userIdError || "　"}</ErrorText>
+            
             <Label>비밀번호</Label>
             <Input value={password} onChange={handlePasswordChange} type="password" placeholder="비밀번호를 입력하세요" />
+            <ErrorText $visible={!!passwordError}>{passwordError || "　"}</ErrorText>
 
             <Label>비밀번호 확인</Label>
             <Input value={checkPass} onChange={handleCheckPasswordChange} type="password" placeholder="비밀번호를 다시 입력하세요" />
-
+            <ErrorText $visible={!!matchError}>{matchError || "　"}</ErrorText>
+            
             <Label>세대 선택</Label>
             <Row>
                 <SelectButton $active={generation === 1} onClick={() => setGeneration(1)}>기성세대</SelectButton>
@@ -47,8 +105,8 @@ const SignUp = () => {
                 </CheckboxLabel>
             </CheckboxRow>
 
-            <ErrorText $visible={!!err}>
-                {err || "　"} {/* 내용이 없으면 높이 유지를 위한 더미 텍스트 */}
+            <ErrorText $visible={!!submitError}>
+                {submitError || "　"}
             </ErrorText>
             <SubmitButton onClick={SignUpButton}>회원가입 완료</SubmitButton>
 
@@ -97,7 +155,6 @@ const Input = styled.input`
   padding: 14px 16px;
   border-radius: 10px;
   border: 1px solid #ddd;
-  margin-bottom: 22px;
   font-size: 15px;
 
   &:focus {
