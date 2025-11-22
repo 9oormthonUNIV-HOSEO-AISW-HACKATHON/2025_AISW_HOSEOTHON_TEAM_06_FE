@@ -10,6 +10,8 @@ import QuizRunner from "./components/quiz/QuizRunner";
 import Dictionary from './components/dictionary/Dictionary.jsx';
 import Header from './components/Header.jsx'
 import styled from 'styled-components'
+import MyPage from "./components/myPage/myPage.jsx";
+
 
 
 
@@ -29,6 +31,8 @@ function App() {
                             <Route path="/quiz" element={<Quiz />} />
                             <Route path="/quiz/:category" element={<QuizRunner />} />
                             <Route path="/dictionary" element={<Dictionary />} />
+                            <Route path="/myPage" element={<MyPage />} />
+
                         </Routes>
                     </MainContent>
                 </AppContainer>
