@@ -87,9 +87,16 @@ const Home = () => {
 
                     {/* Extra */}
                     <ExtraCard>
-                        <CardTitle>기능 추가 예정</CardTitle>
+                        <CardTitle>세대 공감 번역기</CardTitle>
                         <Small>(예: 세대 공감 영화 추천 / 대화 코치 / 주간 트렌드)</Small>
-                        <Btn className="outline" disabled>Coming Soon</Btn>
+                        <Btn
+                            className="outline"
+                            onClick={() => nav("/translate")}
+                            style={{ marginTop: "10px" }}
+                        >
+                            세대 공감 번역 하러 가기 →
+                        </Btn>
+
                     </ExtraCard>
                 </Grid>
             </Container>
