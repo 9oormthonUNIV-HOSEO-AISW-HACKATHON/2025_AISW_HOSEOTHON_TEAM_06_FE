@@ -70,7 +70,7 @@ const Container = styled.main`
     }
 
     @media (max-width: 480px) {
-        padding: 30px 16px;
+        padding: 24px 16px; /* 전체 컨테이너 패딩 축소 */
     }
 `;
 
@@ -79,8 +79,8 @@ const HeaderGroup = styled.div`
     margin-bottom: 50px;
 
     @media (max-width: 480px) {
-        margin-bottom: 24px;
-        text-align: left; /* 모바일에서는 헤더를 왼쪽 정렬하여 리스트와 통일감 */
+        margin-bottom: 20px;
+        text-align: left;
         padding-left: 4px;
     }
 `;
@@ -96,8 +96,8 @@ const Title = styled.h2`
     }
 
     @media (max-width: 480px) {
-        font-size: 24px;
-        margin-bottom: 8px;
+        font-size: 22px; /* 폰트 사이즈 축소 */
+        margin-bottom: 6px;
     }
 `;
 
@@ -106,7 +106,7 @@ const SubTitle = styled.p`
     color: #6b7280;
 
     @media (max-width: 480px) {
-        font-size: 14px;
+        font-size: 13px; /* 폰트 사이즈 축소 */
         line-height: 1.4;
     }
 `;
@@ -115,22 +115,23 @@ const QuizList = styled.div`
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 24px;
+    width: 100%;
 
-    /* 모바일: 그리드 대신 세로 리스트로 변경 */
+    /* 모바일: 세로 리스트, 간격 축소 */
     @media (max-width: 600px) {
         display: flex;
         flex-direction: column;
-        gap: 12px;
+        gap: 10px; /* 카드 간격 12px -> 10px */
     }
 `;
 
 const QuizItem = styled.div`
+    width: 80%;
     background: white;
     padding: 40px 30px;
     border-radius: 24px;
     border: 1px solid #e5e7eb;
 
-    /* PC 기본: 세로 정렬 (Column) */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -150,12 +151,14 @@ const QuizItem = styled.div`
         transform: translateY(-2px);
     }
 
-    /* 모바일: 가로 정렬 (Row) - 리스트 형태로 변경 */
+    /* 모바일 최적화: 더 작고 컴팩트하게 */
     @media (max-width: 600px) {
-        flex-direction: row; /* 가로 배치 */
-        align-items: center; /* 세로 중앙 정렬 */
-        text-align: left;    /* 텍스트 왼쪽 정렬 */
-        padding: 20px;       /* 패딩 축소 */
+        flex-direction: row;
+        align-items: center;
+        text-align: left;
+
+        /* 패딩 대폭 축소 (20px -> 16px) */
+        padding: 16px;
         border-radius: 16px;
 
         &:hover {
@@ -178,21 +181,21 @@ const IconWrapper = styled.div`
     align-items: center;
     justify-content: center;
     font-size: 32px;
-    margin-bottom: 24px; /* PC: 아래 여백 */
+    margin-bottom: 24px;
     transition: background-color 0.3s;
 
     ${QuizItem}:hover & {
         background-color: #e0e7ff;
     }
 
-    /* 모바일: 아이콘 배치 변경 */
+    /* 모바일: 아이콘 크기 더 축소 (56px -> 48px) */
     @media (max-width: 600px) {
-        width: 56px;
-        height: 56px;
-        font-size: 24px;
-        margin-bottom: 0;      /* 아래 여백 제거 */
-        margin-right: 16px;    /* 오른쪽 여백 추가 */
-        flex-shrink: 0;        /* 아이콘 크기 고정 */
+        width: 48px;
+        height: 48px;
+        font-size: 20px; /* 이모지 크기 축소 */
+        margin-bottom: 0;
+        margin-right: 14px; /* 간격 축소 */
+        flex-shrink: 0;
     }
 `;
 
@@ -212,8 +215,9 @@ const ItemTitle = styled.h3`
     font-weight: 800;
     color: #111827;
 
+    /* 모바일: 제목 크기 축소 */
     @media (max-width: 600px) {
-        font-size: 17px;
+        font-size: 16px;
     }
 `;
 
@@ -227,10 +231,10 @@ const ItemDesc = styled.p`
         display: block;
     }
 
+    /* 모바일: 설명 글씨 크기 축소 */
     @media (max-width: 600px) {
-        font-size: 13px;
+        font-size: 12px;
 
-        /* 모바일에서는 줄바꿈 태그 무시하고 한 줄로 쭉 쓰거나 자연스럽게 줄바꿈 */
         .desktop-br {
             display: none;
         }

@@ -51,7 +51,6 @@ const QuizRunner = () => {
                     await api.post("/api/auth/addPoint", {
                         userPoint: "10"
                     });
-
                     window.dispatchEvent(new Event("pointUpdated"));
                 } catch (error) {
                     console.error(error);
@@ -121,8 +120,11 @@ const QuizRunner = () => {
 
 export default QuizRunner;
 
+// -------------------- Styled Components --------------------
+
 const Page = styled.div`
-    height: 100%;
+    /* 헤더 높이 제외 */
+    min-height: calc(100vh - 70px);
     background: #f2f2f2;
     display: flex;
     flex-direction: column;
@@ -133,25 +135,59 @@ const Container = styled.main`
     margin: 30px auto;
     width: 100%;
     padding: 20px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+
+    @media (max-width: 480px) {
+        margin: 0 auto; /* 모바일 마진 제거 */
+        padding: 20px 16px;
+        display: flex;
+        flex-direction: column;
+    }
 `;
 
 const Title = styled.h2`
     font-size: 26px;
     font-weight: 900;
+    color: #1f2937;
+
+    @media (max-width: 480px) {
+        font-size: 22px;
+        text-align: center;
+        margin-bottom: 10px;
+        position: absolute;
+        left: 10;
+    }
 `;
 
 const Card = styled.div`
+    width: 80%;
     background: white;
     border: 2px solid #cfcfcf;
     border-radius: 14px;
     padding: 26px;
     margin-top: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+
+    @media (max-width: 480px) {
+        padding: 20px;
+        margin-top: 70px;
+        border-radius: 12px;
+    }
 `;
 
 const Question = styled.div`
     font-size: 20px;
     font-weight: 800;
     margin-bottom: 18px;
+    line-height: 1.4;
+    color: #111;
+
+    @media (max-width: 480px) {
+        font-size: 18px;
+        margin-bottom: 14px;
+    }
 `;
 
 const ResultText = styled.p`
@@ -159,12 +195,20 @@ const ResultText = styled.p`
     margin-top: 8px;
     color: #444;
     line-height: 1.5;
+
+    @media (max-width: 480px) {
+        font-size: 16px;
+    }
 `;
 
 const Options = styled.div`
     display: flex;
     flex-direction: column;
     gap: 12px;
+
+    @media (max-width: 480px) {
+        gap: 10px;
+    }
 `;
 
 const OptionBtn = styled.button`
@@ -176,9 +220,15 @@ const OptionBtn = styled.button`
     text-align: left;
     cursor: pointer;
     transition: 0.15s;
+    color: #333;
 
     &:hover {
         border-color: #5b4bff;
+    }
+
+    @media (max-width: 480px) {
+        padding: 12px 14px;
+        font-size: 15px;
     }
 `;
 
@@ -187,13 +237,28 @@ const NavRow = styled.div`
     justify-content: flex-end;
     gap: 10px;
     margin-top: 20px;
+
+    @media (max-width: 480px) {
+        margin-top: 16px;
+    }
 `;
 
 const Btn = styled.button`
-    padding: 10px 14px;
+    padding: 10px 16px;
     border-radius: 10px;
     border: 1px solid #cfcfcf;
     background: white;
     font-weight: 800;
     cursor: pointer;
+    transition: background-color 0.2s;
+
+    &:hover:not(:disabled) {
+        background-color: #f9fafb;
+        border-color: #bbb;
+    }
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
 `;
