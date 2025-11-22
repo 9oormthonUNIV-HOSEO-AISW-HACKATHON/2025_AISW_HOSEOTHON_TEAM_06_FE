@@ -76,7 +76,7 @@ const Home = () => {
 
             {/* Grid */}
             <Grid>
-            {/* Quiz Preview */}
+            {/* Quiz.jsx Preview */}
             <QuizCard onClick={() => nav("/quiz")}>
                 <CardTitle>오늘의 퀴즈</CardTitle>
                 <QuizQ>{todayQuiz.q}</QuizQ>
