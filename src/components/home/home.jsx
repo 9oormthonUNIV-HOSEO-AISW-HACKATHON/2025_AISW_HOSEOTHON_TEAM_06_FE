@@ -4,6 +4,7 @@ import { Navigate } from 'react-router-dom';
 import axios from "axios";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import { media } from "../../styles/media";
 
 const Home = () => {
     const { isLoggedIn } = useAuth();
@@ -82,7 +83,7 @@ const Home = () => {
                             궁금한 단어를 입력하면 세대별 의미 차이를 보여줘요.
                         </Small>
                         </div>
-                        <Btn onClick={() => nav("/search")}>검색하러 가기</Btn>
+                        <Btn onClick={() => nav("/dictionary")}>검색하러 가기</Btn>
                     </SearchCard>
 
                     {/* Extra */}
@@ -105,11 +106,14 @@ const Home = () => {
 }
 
 const Page = styled.div`
-    height: 100%;
+    min-height: 100vh;
     background: linear-gradient(180deg, #f6f7fb 0%, #f2f2f2 70%);
     display: flex;
     flex-direction: column;
 `;
+
+
+
 
 const Logo = styled.div`
   font-weight: 900;
@@ -117,15 +121,26 @@ const Logo = styled.div`
 `;
 
 const Container = styled.main`
-  max-width: 980px;
-  margin: 0 auto;
-  width: 100%;
-  padding: 26px;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
+    max-width: 980px;
+    margin: 0 auto;
+    margin-top: 12px;          /* ✅ 헤더와 간격만 살짝 */
+    width: 100%;
+    padding: 26px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+
+    box-sizing: border-box;
+    overflow-x: hidden;
+
+    ${media.mobile} {
+        padding: 16px;
+        margin-top: 8px;
+    }
 `;
+
+
 
 const Card = styled.div`
   background: white;
@@ -133,18 +148,23 @@ const Card = styled.div`
   border-radius: 16px;
   padding: 20px;
   box-shadow: 0 6px 16px rgba(17, 17, 17, 0.05);
+    ${media.mobile} {
+        padding: 16px;
+    }
 `;
 
 /* ===== Home Sections ===== */
 const Hero = styled(Card)`
-  display: flex;
-  gap: 18px;
-  align-items: stretch;
+    display: flex;
+    gap: 18px;
+    align-items: flex-start;   /* ✅ stretch 말고 위 기준 정렬 */
+    padding-top: 24px;         /* ✅ 윗부분 여유를 강제로 줌 */
 
-  @media (max-width: 760px) {
-    flex-direction: column;
-  }
+    ${media.tablet} {
+        flex-direction: column;
+    }
 `;
+
 
 const HeroText = styled.div`
   flex: 1.2;
@@ -161,7 +181,10 @@ const HeroDesc = styled.p`
   margin: 0;
   color: #444;
   line-height: 1.5;
-  white-space: nowrap; 
+  white-space: nowrap;
+    ${media.mobile} {
+        white-space: normal;
+    }
 `;
 
 
@@ -190,15 +213,23 @@ const HeroActions = styled.div`
 `;
 
 const HeroBadge = styled.div`
-  flex: 0.8;
-  background: #f7f7ff;
-  border: 1px dashed #bdbdf6;
-  border-radius: 14px;
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+    flex: 0.8;
+    background: #f7f7ff;
+    border: 1px dashed #bdbdf6;
+    border-radius: 14px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    /* 추가 */
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
 `;
+
+
 
 const BadgeTitle = styled.div`
   font-weight: 900;
@@ -208,11 +239,17 @@ const BadgeTitle = styled.div`
 `;
 
 const BadgeWords = styled.div`
-  margin-top: 6px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+    margin-top: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow-x: hidden;
 `;
+
 
 const WordChip = styled.div`
   background: white;
@@ -235,14 +272,15 @@ const MeaningText = styled.div`
 
 /* grid */
 const Grid = styled.div`
-  display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
-  gap: 16px;
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 16px;
 
-  @media (max-width: 760px) {
-    grid-template-columns: 1fr;
-  }
+    ${media.tablet} {
+        grid-template-columns: 1fr;
+    }
 `;
+
 
 const QuizCard = styled(Card)`
   grid-row: span 2;

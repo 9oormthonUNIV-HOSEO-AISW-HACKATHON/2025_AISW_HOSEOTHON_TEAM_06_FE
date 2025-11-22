@@ -1,3 +1,10 @@
 body {
     margin: 0;
 }
+
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: hidden; /* ← 이거! 화면 잘림 해결 핵심 */
+}
