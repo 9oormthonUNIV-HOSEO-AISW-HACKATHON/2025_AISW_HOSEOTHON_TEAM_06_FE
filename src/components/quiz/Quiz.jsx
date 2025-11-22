@@ -14,21 +14,19 @@ const Quiz = () => {
                 </HeaderGroup>
 
                 <QuizList>
-                    {/* [수정] S 파라미터로 이동 */}
                     <QuizItem onClick={() => nav("/quiz/S")}>
                         <IconWrapper>💻</IconWrapper>
                         <ItemContent>
-                            <ItemTitle>기술별 퀴즈</ItemTitle>
-                            <ItemDesc>React, Spring 등<br className="desktop-br"/> 개발 지식을 테스트해보세요!</ItemDesc>
+                            <ItemTitle>MZ세대 퀴즈</ItemTitle>
+                            <ItemDesc>기성 세대에게 한 걸음 더 다가갈 수 있는<br className="desktop-br"/> 퀴즈를 풀어보세요! </ItemDesc>
                         </ItemContent>
                     </QuizItem>
 
-                    {/* [수정] C 파라미터로 이동 */}
                     <QuizItem onClick={() => nav("/quiz/C")}>
                         <IconWrapper>🧩</IconWrapper>
                         <ItemContent>
-                            <ItemTitle>상황별 퀴즈</ItemTitle>
-                            <ItemDesc>개발 중 마주치는 에러 상황,<br className="desktop-br"/> 어떻게 해결해야 할까요?</ItemDesc>
+                            <ItemTitle>기성세대 퀴즈</ItemTitle>
+                            <ItemDesc>MZ 세대를 더 잘 이해하기 위해<br className="desktop-br"/> 신조어 줄임말 등의 지식을 테스트해보세요!</ItemDesc>
                         </ItemContent>
                     </QuizItem>
                 </QuizList>
