@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import api from "../../api/axios";
+import { media } from "../../styles/media";
 
 const MyPage = () => {
     const [profile, setProfile] = useState({
@@ -223,6 +224,7 @@ const Page = styled.div`
     background: #f2f2f2;
     display: flex;
     flex-direction: column;
+    overflow-x: hidden;
 `;
 
 const Container = styled.main`
@@ -230,20 +232,39 @@ const Container = styled.main`
     margin: 30px auto;
     width: 100%;
     padding: 20px;
+    box-sizing: border-box;
+
+    ${media.mobile} {
+        margin: 18px auto;
+        padding: 16px;
+    }
 `;
+
 
 const Title = styled.h2`
     font-size: 26px;
     font-weight: 900;
     margin-bottom: 18px;
+
+    ${media.mobile} {
+        font-size: 22px;
+        margin-bottom: 14px;
+    }
 `;
+
 
 const Card = styled.div`
     background: white;
     border: 2px solid #cfcfcf;
     border-radius: 14px;
     padding: 22px;
+    box-sizing: border-box;
+
+    ${media.mobile} {
+        padding: 16px;
+    }
 `;
+
 
 const Row = styled.div`
     display: grid;
@@ -251,25 +272,42 @@ const Row = styled.div`
     align-items: center;
     padding: 14px 0;
     border-bottom: 1px solid #eee;
+    column-gap: 10px;
 
     &:last-child {
         border-bottom: none;
     }
 
-    @media (max-width: 600px) {
-        grid-template-columns: 110px 1fr auto;
+    ${media.mobile} {
+        grid-template-columns: 1fr auto;  /* 2열로 축소 */
+        grid-template-areas:
+      "label edit"
+      "value value";
+        row-gap: 6px;
+        padding: 12px 0;
     }
 `;
 
 const Label = styled.div`
     font-weight: 900;
     color: #333;
+
+    ${media.mobile} {
+        grid-area: label;
+        font-size: 14px;
+    }
 `;
 
 const Value = styled.div`
     font-weight: 700;
     color: #111;
+
+    ${media.mobile} {
+        grid-area: value;
+        font-size: 15px;
+    }
 `;
+
 
 const EditBtn = styled.button`
     padding: 6px 10px;
@@ -278,12 +316,20 @@ const EditBtn = styled.button`
     background: #fff;
     font-weight: 800;
     cursor: pointer;
+    white-space: nowrap;
 
     &:hover {
         border-color: #5b4bff;
         color: #5b4bff;
     }
+
+    ${media.mobile} {
+        grid-area: edit;
+        padding: 6px 8px;
+        font-size: 13px;
+    }
 `;
+
 
 const PointBadge = styled.div`
     display: inline-flex;
@@ -342,9 +388,14 @@ const Input = styled.input`
 
 const OptionGrid = styled.div`
     display: grid;
-    grid-template-columns: repeat(2,1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 8px;
+
+    ${media.mobile} {
+        grid-template-columns: 1fr; /* 모바일에서 한줄씩 */
+    }
 `;
+
 
 const OptionBtn = styled.button`
     height: 42px;
