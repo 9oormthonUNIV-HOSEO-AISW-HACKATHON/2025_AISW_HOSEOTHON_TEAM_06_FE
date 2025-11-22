@@ -12,10 +12,8 @@ const Home = () => {
     const { isLoggedIn } = useAuth();
     const nav = useNavigate();
 
-    // ⭐ 유저 포인트 상태
-    const [points, setPoints] = useState(0);
-
-// ⭐ 티어 정보 상태
+    const [topWords, setTopWords] = useState([]);
+    const [points, setPoints] = useState(0)
     const [tier, setTier] = useState({
         current: { name: "브론즈", min: 0, max: 100 },
         next: { name: "실버", min: 100, max: 300 },
@@ -23,7 +21,6 @@ const Home = () => {
         remain: 100,
     });
 
-// ⭐ 티어 기준표
     const tierList = [
         { name: "브론즈", min: 0, max: 100 },
         { name: "실버", min: 100, max: 300 },
@@ -32,7 +29,6 @@ const Home = () => {
         { name: "다이아", min: 1000, max: Infinity }
     ];
 
-// ⭐ 포인트 불러오기 + 티어 계산
     useEffect(() => {
         const fetchPoint = async () => {
             try {
@@ -62,15 +58,27 @@ const Home = () => {
             }
         };
 
+        const fetchTopWords = async () => {
+            try {
+                // Swagger 명세에 따른 GET 요청
+                const response = await api.get("/api/word/wordTop3");
+
+                // API 응답 데이터 ([{idx, name, mean, categories}, ...])
+                setTopWords(response.data);
+            } catch (error) {
+                console.error("인기 단어 로딩 실패:", error);
+                // 에러 시 빈 배열 혹은 더미 데이터 유지 가능
+            }
+        };
+
+        if (isLoggedIn) {
+            fetchTopWords();
+        }
+
         fetchPoint();
-    }, []);
+    }, [isLoggedIn]);
 
 
-    const topWords = [
-        { word: "가오", meaning: "멋/폼/분위기" },
-        { word: "현타", meaning: "현실 자각 타임" },
-        { word: "킹받네", meaning: "엄청 짜증나네" },
-    ];
     const todayQuiz = { q: "“가오”의 뜻은 무엇일까요?" };
 
 
@@ -119,21 +127,21 @@ const Home = () => {
                     </HeroText>
 
                     <HeroBadge>
-                    <BadgeTitle>🔥 오늘의 인기 단어</BadgeTitle>
+                    <BadgeTitle>🔥 사람들이 가장 많이 틀린 단어는?</BadgeTitle>
 
                     {/* 단어+뜻 유지 */}
                     <BadgeWords>
-                    {topWords.map((item, idx) => (
-                        <WordChip key={idx}>
-                        <WordText>{item.word}</WordText>
-                        <MeaningText>{item.meaning}</MeaningText>
-                        </WordChip>
-                    ))}
+                        {topWords.length > 0 ? (
+                            topWords.map((item, idx) => (
+                                <WordChip key={item.idx || idx}>
+                                    <WordText>{item.name}</WordText>
+                                    <MeaningText>{item.mean}</MeaningText>
+                                </WordChip>
+                            ))
+                        ) : (
+                            <Small>로딩 중이거나 데이터가 없습니다.</Small>
+                        )}
                     </BadgeWords>
-
-                    <Small onClick={() => nav("/trending")} style={{cursor:"pointer", marginTop: 2}}>
-                    많이 검색된 단어 보러가기 →
-                    </Small>
                 </HeroBadge>
                 </Hero>
 
