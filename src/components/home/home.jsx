@@ -6,9 +6,9 @@ import axios from "axios";
 const Home = () => {
     const { isLoggedIn } = useAuth();
 
-    if (!isLoggedIn) {
-        return <Navigate to="/signIn" replace />;
-    }
+    // if (!isLoggedIn) {
+    //     return <Navigate to="/signIn" replace />;
+    // }
 
     return(
         <>

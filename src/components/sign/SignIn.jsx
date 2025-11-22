@@ -5,29 +5,33 @@ import { useNavigate } from "react-router-dom";
 
 const SignIn = () => {
     const navigate = useNavigate();
-    const [userId, setUserId] = useState('asdds')
+    const [userId, setUserId] = useState()
     const [password, setPassword] = useState()
+    const [error, setError] = useState("");
 
     const handleIdChange = (e) => {
         setUserId(e.target.value)
+        setError('')
     }
 
     const handlePasswordChange = (e) => {
         setPassword(e.target.value)
+        setError('')
     }
 
-    // const SignInButton = async () => {
-
+    const SignInButton = async () => {
+        if (!userId  || !password || userId === '' || password === '') {
+            setError("아이디와 비밀번호를 모두 입력해주세요.");
+            return;
+        }
     // TODO : 주소 수정, 데이터 수정, response 어떻게 올지 받고 토큰 저장하기
     // TODO : 실패하는 경우 추가
-
     //     try{
     //         const res = await api.post('/signUpOk', {userId: userId, password: password})
     //     }
     //     catch(error){
-    //
     //     }
-    // }
+    }
 
     return (
         <Container>
@@ -37,7 +41,11 @@ const SignIn = () => {
                 <Input onChange={handleIdChange} value={userId} placeholder="이메일" />
                 <Input onChange={handlePasswordChange} value={password} type="password" placeholder="비밀번호" />
 
-                <Button>로그인</Button>
+                <ErrorText $visible={!!error}>
+                    {error || " "}
+                </ErrorText>
+
+                <Button onClick={SignInButton}>로그인</Button>
 
                 <SubText>
                     아직 회원이 아니신가요?
@@ -59,12 +67,22 @@ const Container = styled.div`
     background: #f7f7f7;
 `;
 
+const ErrorText = styled.p`
+    color: #ff4b4b;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 12px;
+    min-height: 20px;
+    visibility: ${(props) => (props.$visible ? 'visible' : 'hidden')};
+`;
+
 const Card = styled.div`
     width: 400px;
     padding: 40px 32px;
     border-radius: 16px;
     background: white;
-    box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
     display: flex;
     flex-direction: column;
 `;
@@ -82,6 +100,11 @@ const Input = styled.input`
     border: 1px solid #ccc;
     margin-bottom: 16px;
     font-size: 15px;
+
+    &:focus {
+        outline: none;
+        border-color: #6a5acd;
+    }
 `;
 
 const Button = styled.button`
