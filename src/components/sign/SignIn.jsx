@@ -1,11 +1,53 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
+import api from '../../api/axios.jsx';
+import { useNavigate } from "react-router-dom";
 
-const Temp = styled.div`
-    width: 50px;
-    height: 50px;
-    background-color: coral;
-`;
+const SignIn = () => {
+    const navigate = useNavigate();
+    const [userId, setUserId] = useState('asdds')
+    const [password, setPassword] = useState()
+
+    const handleIdChange = (e) => {
+        setUserId(e.target.value)
+    }
+
+    const handlePasswordChange = (e) => {
+        setPassword(e.target.value)
+    }
+
+    // const SignInButton = async () => {
+
+    // TODO : 주소 수정, 데이터 수정, response 어떻게 올지 받고 토큰 저장하기
+    // TODO : 실패하는 경우 추가
+
+    //     try{
+    //         const res = await api.post('/signUpOk', {userId: userId, password: password})
+    //     }
+    //     catch(error){
+    //
+    //     }
+    // }
+
+    return (
+        <Container>
+            <Card>
+                <Title>로그인</Title>
+
+                <Input onChange={handleIdChange} value={userId} placeholder="이메일" />
+                <Input onChange={handlePasswordChange} value={password} type="password" placeholder="비밀번호" />
+
+                <Button>로그인</Button>
+
+                <SubText>
+                    아직 회원이 아니신가요?
+                    <span onClick={() => navigate('/signUp')}> 회원가입</span>
+                </SubText>
+
+            </Card>
+        </Container>
+    );
+};
 
 /* ===== 로그인 페이지 스타일 ===== */
 const Container = styled.div`
@@ -18,11 +60,13 @@ const Container = styled.div`
 `;
 
 const Card = styled.div`
-    width: 380px;
+    width: 400px;
     padding: 40px 32px;
     border-radius: 16px;
     background: white;
     box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.12);
+    display: flex;
+    flex-direction: column;
 `;
 
 const Title = styled.h2`
@@ -33,7 +77,6 @@ const Title = styled.h2`
 `;
 
 const Input = styled.input`
-    width: 100%;
     padding: 12px 14px;
     border-radius: 8px;
     border: 1px solid #ccc;
@@ -70,27 +113,5 @@ const SubText = styled.p`
         cursor: pointer;
     }
 `;
-
-const SignIn = () => {
-    return (
-        <Container>
-            <Card>
-                <Title>로그인</Title>
-
-                <Input type="email" placeholder="이메일" />
-                <Input type="password" placeholder="비밀번호" />
-
-                <Button>로그인</Button>
-
-                <SubText>
-                    아직 회원이 아니신가요? <span>회원가입</span>
-                </SubText>
-
-                {/* 기존 temp 박스 */}
-                <Temp />
-            </Card>
-        </Container>
-    );
-};
 
 export default SignIn;

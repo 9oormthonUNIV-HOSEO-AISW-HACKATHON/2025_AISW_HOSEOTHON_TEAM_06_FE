@@ -1,6 +1,6 @@
 import {Route, Routes, BrowserRouter} from 'react-router-dom'
 import './App.css'
-// import AuthContext from './context/AuthContext.jsx'
+import { AuthProvider } from './context/AuthContext.jsx'
 import Home from './components/home/home.jsx'
 import SignIn from './components/sign/signin.jsx'
 import SignUp from './components/sign/signup.jsx'
@@ -8,7 +8,7 @@ import SignUp from './components/sign/signup.jsx'
 function App() {
 
     return (
-        // <AuthContext>
+        <AuthProvider>
             <BrowserRouter>
                 <Routes>
                     <Route path='/' element={<Home />} />
@@ -16,7 +16,7 @@ function App() {
                     <Route path='/signUp' element={<SignUp />} />
                 </Routes>
             </BrowserRouter>
-        // </AuthContext>
+        </AuthProvider>
     )
 }
 
