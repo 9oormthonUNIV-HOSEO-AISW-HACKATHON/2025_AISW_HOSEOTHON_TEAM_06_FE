@@ -218,7 +218,7 @@ export default MyPage;
 // --- Styled Components ---
 
 const Page = styled.div`
-    min-height: 100vh;
+    min-height: 100%;
     background: #f2f2f2;
     display: flex;
     flex-direction: column;
