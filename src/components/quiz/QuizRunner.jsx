@@ -85,7 +85,7 @@ const QuizRunner = () => {
                 isMz: userIsMz
             });
 
-            const correct = resultMessage === "정답입니다.";
+            const correct = resultMessage === "정답입니다!";
             setIsCorrect(correct);
 
             if (correct) {
